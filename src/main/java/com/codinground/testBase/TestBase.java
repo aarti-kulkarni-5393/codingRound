@@ -12,8 +12,10 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.PageFactory;
 
+import com.codinground.resourceHelper.ResourceHelper;
 import com.google.common.io.Files;
 import com.google.j2objc.annotations.Property;
 
@@ -25,30 +27,38 @@ public class TestBase {
 	/*
 	 * This method will setup your test browser and launch it with given URL
 	 */
-	public void setup(String testBrowser ,String TestURL)
+	public WebDriver setup(String testBrowser ,String TestURL)
 	{
 		setBrowser(testBrowser);
-		
-		getUrl(TestURL);
+	    getUrl(TestURL);
+	    
+	    return driver;
 	}
 	
 	/* 
 	 * This method will set given browser details  
 	 */
-	public void setBrowser(String browser)
-	{
+	public WebDriver setBrowser(String browser)
+	{   
+		/*
+		 * Replaced given chromedriver exe as it is not compatible 
+		 */
 		if (browser.equalsIgnoreCase("chrome")) 
 		{
-			System.setProperty("webdriver.chrome.driver",System.getProperty("usr.dir")+"//src//main//drivers//chromedriver.exe");
-			driver = new ChromeDriver();
+			System.setProperty("webdriver.chrome.driver",ResourceHelper.getBasePath()+"//src//main//drivers//chromedriver.exe");
+			ChromeOptions options = new ChromeOptions();
+			options.addArguments("--disable-notifications");
+			driver = new ChromeDriver(options);
+			return driver;
 		}
 		else if (browser.equalsIgnoreCase("firefox")) {
-			System.setProperty("webdriver.chrome.driver",System.getProperty("user.dir")+"//src//main//drivers//geckodriver.exe");
+			System.setProperty("webdriver.chrome.driver",ResourceHelper.getBasePath()+"//src//main//drivers//geckodriver.exe");
+			return driver;
 		}
 		else if (browser.equalsIgnoreCase("") || browser.isEmpty()) {
-		   
+			return null;
 		}
-		
+		return null;
 	}
 	
 	/*
@@ -58,6 +68,7 @@ public class TestBase {
 	public void getUrl(String url)
 	{
 		driver.get(url);
+		driver.manage().window().maximize();
 	}
 	
 	/*
@@ -82,4 +93,10 @@ public class TestBase {
 		return actualImageName;
 	}
   
+	public void closeBrowser()
+	{
+		
+		driver.close();
+	}
+	
 }

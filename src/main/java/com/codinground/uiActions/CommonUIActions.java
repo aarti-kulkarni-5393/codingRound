@@ -6,6 +6,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 
 public class CommonUIActions {
 	
@@ -57,19 +58,17 @@ public class CommonUIActions {
 			   
 			   java.util.List<WebElement> rows = month.findElements(By.xpath("//*[@class='calendar']/tbody/tr"));
 			   for (WebElement row : rows) {
-				
+				    
 				   java.util.List<WebElement> days = row.findElements(By.xpath("td"));
-				   
+				  
 				   for (WebElement day : days) {
 					  
-					   if (day.findElement(By.xpath("/a")).equals(Myday)) 
-					   {
-						   
-						   day.findElement(By.xpath("/a")).click();
-						}
-					
-						
+					   String date = day.getText();
+					   if (date.equals(Myday)) {
+						  day.click();
+						  break;
 					}
+				   }
 					   
 					   
 					
@@ -90,10 +89,31 @@ public class CommonUIActions {
 	   
 	   
 	   
+	   public void switchToMainFrmae()
+	   {
+		   driver.switchTo().defaultContent();
+	   }
 	   
+	   public void selectElement(String value,WebElement element)
+	   {
+		   Select obj_select = new Select(element);
+		   obj_select.selectByValue(value);
+		   
+	   }
 	   
-	   
-	   
+	   public void selectElement(int index,WebElement element)
+	   {
+		   Select obj_select = new Select(element);
+		   obj_select.selectByIndex(index);
+		   
+	   }
+	   public void selectElement(String name ,WebElement element,String status)
+	   {
+		   Select obj_select = new Select(element);
+		   obj_select.selectByVisibleText(name);
+		   
+		   
+	   }
    }
 
 

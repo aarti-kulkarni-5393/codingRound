@@ -3,6 +3,9 @@ import com.codinground.testBase.TestBase;
 import com.codinground.uiActions.CommonUIActions;
 import com.codinground.waitHelper.WaitHelper;
 import com.sun.javafx.PlatformUtil;
+
+import okhttp3.internal.http2.Header;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -55,6 +58,8 @@ public class SignInTest extends TestBase   {
     	 user_email.sendKeys(userName);
     	 user_passWord.sendKeys(password);
     	 signInButton.click();
+    	 CommonUIActions Act = new CommonUIActions(driver);
+    	 act.switchToMainFrmae();
     	 }
     	 catch (Exception e) {
 			e.printStackTrace();
@@ -78,7 +83,15 @@ public class SignInTest extends TestBase   {
      }
      
      
-     
+     public boolean verifyLoginSuccessful(String userName)
+     {   
+    	 WebElement user_signIn = driver.findElement(By.xpath(".//a[@id='userAccountLink' and @title='"+userName+"']"));
+    	 //helpWithWait.waitForElement(user_signIn);
+     	 CommonUIActions Act = new CommonUIActions(driver);
+          
+     	return Act.isElementDisplayed(user_signIn);
+     	
+     }
 
     //@Test
 //    public void shouldThrowAnErrorIfSignInDetailsAreMissing() {
